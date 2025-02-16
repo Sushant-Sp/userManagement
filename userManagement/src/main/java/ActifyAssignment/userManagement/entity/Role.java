@@ -23,6 +23,7 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     @Column(unique = true)
+    @JsonProperty("name")
     private Roletype name;
 
 }

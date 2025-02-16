@@ -9,5 +9,10 @@ import java.util.List;
 public interface UserService {
 
     UserEntity signUpUser(UserEntity user);
+    List<UserEntity>getAllUsers();
+    UserEntity getUserById(Long id);
+    UserEntity assignRoleToUser(Long userId, Long roleId);
 
+
+//    UserEntity updateUser(Long id);
 }
