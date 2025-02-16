@@ -4,6 +4,7 @@ import ActifyAssignment.userManagement.service.Impl.CustomUserDetailService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,9 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
+    @Autowired
     private final JwtUtil jwtUtil;
+    @Autowired
     private final CustomUserDetailService userDetailsService;
 
     public JwtFilter(JwtUtil jwtUtil, CustomUserDetailService userDetailsService) {

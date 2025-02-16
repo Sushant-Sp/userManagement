@@ -12,7 +12,10 @@ public interface UserService {
     List<UserEntity>getAllUsers();
     UserEntity getUserById(Long id);
     UserEntity assignRoleToUser(Long userId, Long roleId);
+    UserEntity updateUser(Long id, UserEntity updatedUser);
+    void deleteUser(Long id);
 
 
-//    UserEntity updateUser(Long id);
+
+
 }

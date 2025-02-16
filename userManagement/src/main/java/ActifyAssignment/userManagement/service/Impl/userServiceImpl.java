@@ -46,7 +46,7 @@ public class userServiceImpl implements UserService {
 
 
 
-        UserEntity createdUser = userRepository.save(user);
+        UserEntity createdUser =userRepository.save(user);
 
         return createdUser;
     }
@@ -59,6 +59,32 @@ public class userServiceImpl implements UserService {
     public UserEntity getUserById(Long id){
         Optional<UserEntity> userEntityOptional=userRepository.findById(id);
         return userEntityOptional.orElse(null);
+    }
+
+    @Override
+    @Transactional
+    public UserEntity updateUser(Long id, UserEntity updatedUser) {
+        UserEntity existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+
+        existingUser.setName(updatedUser.getName());
+        existingUser.setEmail(updatedUser.getEmail());
+
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+            existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+            existingUser.setConfirmPassword(passwordEncoder.encode(updatedUser.getConfirmPassword()));
+        }
+
+        return userRepository.save(existingUser);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
+
+        userRepository.delete(user);
     }
 
 
