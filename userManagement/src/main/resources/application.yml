@@ -1,0 +1,21 @@
+#
+# spring:
+#  datasource:
+#    url: jdbc:mariadb://localhost:3307/Actify
+#    username: root
+#    password: sushant99
+#    driver-class-name: org.mariadb.jdbc.Driver
+#  jpa:
+#    hibernate:
+#      ddl-auto: update
+#
+# server:
+#  port: 8008
+#
+##  spring:
+##  security:
+##    user:
+##      name: user
+##      password: user123
+#
+##  SECRET_KEY: wW8tA6+dUeKhqF4XBKlFsjm9FBFXQpBcNfT5mSxQFdE=
