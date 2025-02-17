@@ -31,6 +31,11 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
 
+        if (request.getRequestURI().equals("/api/v1/auth/login")) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         String role = request.getHeader("Role");
 
         if (role == null || role.isEmpty()) {
@@ -38,7 +43,6 @@ public class JwtFilter extends OncePerRequestFilter {
             response.getWriter().write("Role is missing in the header");
             return;
         }
-        // Skip token validation for login endpoint
         if (request.getRequestURI().equals("/api/v1/auth/login")) {
             chain.doFilter(request, response);
             return;
