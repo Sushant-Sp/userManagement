@@ -6,6 +6,7 @@ import ActifyAssignment.userManagement.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,36 +28,36 @@ public class UserController {
         return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 
     }
-
-    @GetMapping("/get")
-    public ResponseEntity<List<UserEntity>> getAllUsers(){
-        List<UserEntity> userEntities=userService.getAllUsers();
-        return ResponseEntity.ok(userEntities);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<UserEntity> getUserById(@PathVariable Long id){
-        UserEntity user=userService.getUserById(id);
-        if(user !=null){
-            return new ResponseEntity<>(user,HttpStatus.CREATED);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
     @PostMapping("/{userId}/assign-role/{roleId}")
-    public ResponseEntity<UserEntity> assignRoleToUser(@PathVariable Long userId, @PathVariable Long roleId) {
+    public ResponseEntity<UserEntity> assignRoleToUser(
+            @PathVariable Long userId, @PathVariable Long roleId) {
         UserEntity updatedUser = userService.assignRoleToUser(userId, roleId);
         return ResponseEntity.ok(updatedUser);
     }
 
+
+    @PreAuthorize("hasAuthority('USER')") // Ensures authentication
+    @GetMapping("/all")
+    public ResponseEntity<List<UserEntity>> getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
+
+    @PreAuthorize("hasAuthority('USER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
     @PutMapping("/{id}")
-    public ResponseEntity<UserEntity> updateUser(@PathVariable Long id, @RequestBody UserEntity updatedUser) {
+    public ResponseEntity<UserEntity> updateUser(
+            @PathVariable Long id,
+            @RequestBody UserEntity updatedUser) {
+
         UserEntity user = userService.updateUser(id, updatedUser);
         return ResponseEntity.ok(user);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
